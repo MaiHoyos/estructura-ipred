@@ -1,9 +1,9 @@
 (() => {
   "use strict";
 
-  const STORAGE_KEY = "uis-ipred-interactivo-v2";
+  const STORAGE_KEY = "uis-ipred-interactivo-v3";
   const LEGACY_STORAGE_KEY = "uis-ipred-interactivo-legacy-none";
-  const SCHEMA_VERSION = 3;
+  const SCHEMA_VERSION = 5;
   const CANVAS_WIDTH = 2500;
   const MIN_ZOOM = 0.35;
   const MAX_ZOOM = 1.50;
@@ -13,7 +13,7 @@
 
   const GROUPS = ["actual", "propuesta"];
   const GROUP_BY_CORE = {
-    sedes: "actual",
+    ipred: "actual",
     escuelas: "propuesta"
   };
 
@@ -62,31 +62,26 @@
 
     if(preset === "actual"){
       add("ipred", "IPRED", 1070, 58, 360, 58, null, {kind:"main", css:"dark"});
-      add("sedes", "ORGANIZACIÓN ACTUAL\n5 SEDES", 1005, 155, 490, 72, "ipred", {kind:"main", css:"rectoria"});
 
-      add("barbosa", "Sede Barbosa", 40, 300, 340, 54, "sedes", {group:"actual", style:"new"});
-      add("barbosa-alimentos", "Ingeniería en Alimentos", 55, 385, 310, 44, "barbosa", {group:"actual", style:"sublevel"});
 
-      add("socorro", "Sede Socorro", 430, 300, 370, 54, "sedes", {group:"actual", style:"new"});
-      add("socorro-aeth", "Administración de Empresas\nTurísticas y Hoteleras", 445, 385, 340, 52, "socorro", {group:"actual", style:"sublevel"});
-      add("socorro-construccion", "Ingeniería de la Construcción", 445, 447, 340, 44, "socorro", {group:"actual", style:"sublevel"});
-      add("socorro-arquitectura", "Arquitectura", 445, 501, 340, 40, "socorro", {group:"actual", style:"sublevel"});
-
-      add("malaga", "Sede Málaga", 850, 300, 340, 54, "sedes", {group:"actual", style:"new"});
-      add("malaga-forestal", "Ingeniería Forestal", 865, 385, 310, 44, "malaga", {group:"actual", style:"sublevel"});
-      add("malaga-zootecnia", "Zootecnia", 865, 439, 310, 40, "malaga", {group:"actual", style:"sublevel"});
-      add("malaga-veterinaria", "Medicina Veterinaria", 865, 489, 310, 44, "malaga", {group:"actual", style:"sublevel"});
-
-      add("barranca", "Sede Barranca", 1240, 300, 340, 54, "sedes", {group:"actual", style:"new"});
-      add("barranca-inteligencia-artificial", "Ingeniería en Inteligencia Artificial", 1255, 385, 310, 52, "barranca", {group:"actual", style:"sublevel"});
-
-      add("distancia", "Distancia", 1630, 300, 420, 54, "sedes", {group:"actual", style:"new"});
-      add("dist-artes", "Artes Plásticas", 1650, 385, 380, 40, "distancia", {group:"actual", style:"sublevel"});
-      add("dist-agro", "Administración Agropecuaria\n(Tecnología y Técnica)", 1650, 435, 380, 52, "distancia", {group:"actual", style:"sublevel"});
-      add("dist-judicial", "Tecnología en Gestión Judicial\ne Investigación Criminal", 1650, 497, 380, 52, "distancia", {group:"actual", style:"sublevel"});
-      add("dist-gestion", "Gestión Empresarial", 1650, 559, 380, 40, "distancia", {group:"actual", style:"sublevel"});
-      add("dist-tecnologia", "Tecnología Empresarial", 1650, 609, 380, 40, "distancia", {group:"actual", style:"sublevel"});
-      return nodes;
+      add("barbosa", "Sede Barbosa", 40, 220, 340, 54, "ipred", {group:"actual", style:"new"});
+      add("barbosa-alimentos", "Ingeniería en Alimentos", 55, 305, 310, 44, "barbosa", {group:"actual", style:"sublevel"});
+      add("socorro", "Sede Socorro", 430, 220, 370, 54, "ipred", {group:"actual", style:"new"});
+      add("socorro-aeth", "Administración de Empresas\nTurísticas y Hoteleras", 445, 305, 340, 52, "socorro", {group:"actual", style:"sublevel"});
+      add("socorro-construccion", "Ingeniería de la Construcción", 445, 367, 340, 44, "socorro", {group:"actual", style:"sublevel"});
+      add("socorro-arquitectura", "Arquitectura", 445, 421, 340, 40, "socorro", {group:"actual", style:"sublevel"});
+      add("malaga", "Sede Málaga", 850, 220, 340, 54, "ipred", {group:"actual", style:"new"});
+      add("malaga-forestal", "Ingeniería Forestal", 865, 305, 310, 44, "malaga", {group:"actual", style:"sublevel"});
+      add("malaga-zootecnia", "Zootecnia", 865, 359, 310, 40, "malaga", {group:"actual", style:"sublevel"});
+      add("malaga-veterinaria", "Medicina Veterinaria", 865, 409, 310, 44, "malaga", {group:"actual", style:"sublevel"});
+      add("barranca", "Sede Barranca", 1240, 220, 340, 54, "ipred", {group:"actual", style:"new"});
+      add("barranca-inteligencia-artificial", "Ingeniería en Inteligencia Artificial", 1255, 305, 310, 52, "barranca", {group:"actual", style:"sublevel"});
+      add("distancia", "Distancia", 1630, 220, 420, 54, "ipred", {group:"actual", style:"new"});
+      add("dist-artes", "Artes Plásticas", 1650, 305, 380, 40, "distancia", {group:"actual", style:"sublevel"});
+      add("dist-agro", "Administración Agropecuaria\n(Tecnología y Técnica)", 1650, 355, 380, 52, "distancia", {group:"actual", style:"sublevel"});
+      add("dist-judicial", "Tecnología en Gestión Judicial\ne Investigación Criminal", 1650, 417, 380, 52, "distancia", {group:"actual", style:"sublevel"});
+      add("dist-gestion", "Gestión Empresarial", 1650, 479, 380, 40, "distancia", {group:"actual", style:"sublevel"});
+      add("dist-tecnologia", "Tecnología Empresarial", 1650, 529, 380, 40, "distancia", {group:"actual", style:"sublevel"});      return nodes;
     }
 
     if(preset === "propuesta"){
@@ -246,17 +241,38 @@
 
   // Incorpora las nuevas casillas en vistas que ya estaban editadas y guardadas
   // en la versión anterior, sin perder sus movimientos, rótulos ni dependencias.
-  function migrateBarrancaAI(loaded, preset){
-    const addedIDs = preset === "actual"
-      ? ["barranca-inteligencia-artificial"]
-      : ["escuela-sistemas", "esist-inteligencia-artificial"];
-    const defaults=buildNodesForPreset(preset);
-    const ids=new Set(loaded.nodes.map(n => n.id));
-    addedIDs.forEach(id=>{
+  // Conservar las ediciones previas, pero aplicar la nueva jerarquía
+  // tanto a datos guardados como a proyectos recién abiertos.
+  function migratePresetState(loaded, preset){
+    const defaults = buildNodesForPreset(preset);
+    const ids = new Set(loaded.nodes.map(n => n.id));
+    const ensureNode = id => {
       if(ids.has(id)) return;
-      const fresh=defaults.find(n=>n.id===id);
+      const fresh = defaults.find(n => n.id === id);
       if(fresh){ loaded.nodes.push(deepClone(fresh)); ids.add(id); }
-    });
+    };
+
+    if(preset === "actual"){
+      const hadIntermediate = loaded.nodes.some(n => n.id === "sedes");
+      // Los datos de las versiones anteriores tenían 80px extra entre niveles.
+      if(hadIntermediate){
+        loaded.nodes.forEach(n => {
+          if(n.group === "actual") n.y = Math.max(5, n.y - 80);
+        });
+      }
+      loaded.nodes = loaded.nodes.filter(n => n.id !== "sedes");
+      ["barbosa","socorro","malaga","barranca","distancia"].forEach(id => {
+        const node = loaded.nodes.find(n => n.id === id);
+        if(node){ node.parent = "ipred"; node.group = "actual"; }
+        else ensureNode(id);
+      });
+      ensureNode("barranca-inteligencia-artificial");
+      if(loaded.collapsedNodes) delete loaded.collapsedNodes.sedes;
+    }else if(preset === "propuesta"){
+      ensureNode("escuela-sistemas");
+      ensureNode("esist-inteligencia-artificial");
+    }
+    loaded.schemaVersion = SCHEMA_VERSION;
     return loaded;
   }
 
@@ -270,9 +286,7 @@
             const candidate=parsed.views[view];
             if(candidate && Array.isArray(candidate.nodes) && candidate.nodes.length){
               const loaded=normalizeState(candidate);
-              viewStates[view]=(parsed.schemaVersion || 2) < SCHEMA_VERSION
-                ? migrateBarrancaAI(loaded,view)
-                : loaded;
+              viewStates[view]=migratePresetState(loaded,view);
             }
           }
           currentPreset=VIEW_META[parsed.activeView] ? parsed.activeView : "actual";
