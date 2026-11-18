@@ -3,7 +3,7 @@
 
   const STORAGE_KEY = "uis-ipred-interactivo-v2";
   const LEGACY_STORAGE_KEY = "uis-ipred-interactivo-legacy-none";
-  const SCHEMA_VERSION = 2;
+  const SCHEMA_VERSION = 3;
   const CANVAS_WIDTH = 2500;
   const MIN_ZOOM = 0.35;
   const MAX_ZOOM = 1.50;
@@ -78,6 +78,7 @@
       add("malaga-veterinaria", "Medicina Veterinaria", 865, 489, 310, 44, "malaga", {group:"actual", style:"sublevel"});
 
       add("barranca", "Sede Barranca", 1240, 300, 340, 54, "sedes", {group:"actual", style:"new"});
+      add("barranca-inteligencia-artificial", "Ingeniería en Inteligencia Artificial", 1255, 385, 310, 52, "barranca", {group:"actual", style:"sublevel"});
 
       add("distancia", "Distancia", 1630, 300, 420, 54, "sedes", {group:"actual", style:"new"});
       add("dist-artes", "Artes Plásticas", 1650, 385, 380, 40, "distancia", {group:"actual", style:"sublevel"});
@@ -126,6 +127,11 @@
 
       add("escuela-derecho", "Escuela de Derecho", 1890, y, 280, 52, "escuelas", {group:"propuesta", style:"new"});
       add("eder-judicial", "Tecnología en Gestión Judicial\ne Investigación Criminal", 1900, 370, 260, 52, "escuela-derecho", {group:"propuesta", style:"sublevel"});
+
+      // El programa de la Sede Barranca se adscribe a la Escuela de
+      // Ingeniería de Sistemas e Informática dentro de la propuesta.
+      add("escuela-sistemas", "Escuela de Ingeniería de\nSistemas e Informática", 2200, y, 285, 62, "escuelas", {group:"propuesta", style:"new"});
+      add("esist-inteligencia-artificial", "Ingeniería en\nInteligencia Artificial", 2210, 374, 265, 52, "escuela-sistemas", {group:"propuesta", style:"sublevel"});
 
       add("modelo-escuela-frame", "Modelo interno de Escuela", 1920, 35, 395, 205, null, {kind:"model-frame"});
       add("modelo-direccion", "Dirección de\nEscuela", 1960, 106, 140, 50, null, {kind:"model-item", style:"sublevel"});
@@ -238,6 +244,22 @@
     return parsed;
   }
 
+  // Incorpora las nuevas casillas en vistas que ya estaban editadas y guardadas
+  // en la versión anterior, sin perder sus movimientos, rótulos ni dependencias.
+  function migrateBarrancaAI(loaded, preset){
+    const addedIDs = preset === "actual"
+      ? ["barranca-inteligencia-artificial"]
+      : ["escuela-sistemas", "esist-inteligencia-artificial"];
+    const defaults=buildNodesForPreset(preset);
+    const ids=new Set(loaded.nodes.map(n => n.id));
+    addedIDs.forEach(id=>{
+      if(ids.has(id)) return;
+      const fresh=defaults.find(n=>n.id===id);
+      if(fresh){ loaded.nodes.push(deepClone(fresh)); ids.add(id); }
+    });
+    return loaded;
+  }
+
   function loadState(){
     try{
       const raw=localStorage.getItem(STORAGE_KEY);
@@ -247,7 +269,10 @@
           for(const view of GROUPS){
             const candidate=parsed.views[view];
             if(candidate && Array.isArray(candidate.nodes) && candidate.nodes.length){
-              viewStates[view]=normalizeState(candidate);
+              const loaded=normalizeState(candidate);
+              viewStates[view]=(parsed.schemaVersion || 2) < SCHEMA_VERSION
+                ? migrateBarrancaAI(loaded,view)
+                : loaded;
             }
           }
           currentPreset=VIEW_META[parsed.activeView] ? parsed.activeView : "actual";
