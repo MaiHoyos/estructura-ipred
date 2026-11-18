@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Estructura IPRED — interactiva</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="page-header">
+    <div class="top-rule"></div>
+    <img src="uis-marca.png" class="uis-brand" alt="Universidad Industrial de Santander" />
+    <div class="title-wrap">
+      <h1 id="pageTitle">ESTRUCTURA IPRED</h1>
+      <p id="pageSubtitle" class="page-subtitle">Organización actual del IPRED</p>
+    </div>
+
+    <div class="main-tools">
+      <div class="zoom-tools" aria-label="Zoom del organigrama">
+        <span class="zoom-icon" aria-hidden="true">🔍</span>
+        <button id="zoomOutBtn" class="btn zoom-btn" type="button" title="Alejar">−</button>
+        <span id="zoomValue" class="zoom-value" aria-live="polite">100%</span>
+        <button id="zoomInBtn" class="btn zoom-btn" type="button" title="Acercar">＋</button>
+        <button id="fitBtn" class="btn" type="button" title="Ajustar el organigrama al ancho disponible">Ajustar</button>
+      </div>
+      <span class="always-editing-badge" title="Las casillas pueden moverse y editarse en cualquier momento">✎ Edición siempre activa</span>
+      <button id="expandBtn" class="btn">⊞ Desplegar todo</button>
+      <button id="collapseBtn" class="btn">⊟ Contraer todo</button>
+      <button id="resetBtn" class="btn subtle">↺ Restablecer</button>
+      <button id="exportBtn" class="btn primary">💾 Guardar PNG</button>
+    </div>
+  </header>
+
+  <section id="editBar" class="edit-bar" aria-label="Herramientas de edición">
+    <div class="edit-bar-left">
+      <strong>Edición permanente</strong>
+      <span class="edit-help">Arrastra cualquier casilla en cualquier momento. Si tiene dependencias, toda la rama se mueve con ella. Haz clic en +/− para desplegar o contraer y en una línea para editar su enlace.</span>
+    </div>
+    <div class="edit-actions">
+      <button id="addBtn" class="btn primary">＋ Agregar casilla</button>
+      <button id="renameBtn" class="btn" disabled>Renombrar</button>
+      <button id="parentBtn" class="btn" disabled>Cambiar dependencia</button>
+      <button id="linkBtn" class="btn" disabled>Editar enlace</button>
+      <button id="deleteBtn" class="btn danger" disabled>Eliminar</button>
+    </div>
+  </section>
+
+  <main>
+    <div class="canvas-shell" id="canvasShell">
+      <div id="canvasStage" class="canvas-stage">
+        <div id="orgCanvas" class="org-canvas" aria-label="Estructura IPRED interactiva">
+          <svg id="connections" class="connections" aria-hidden="true"></svg>
+          <div id="nodesLayer" class="nodes-layer"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-row">
+      <div class="legend">
+        <div><span class="legend-line"></span><span>Relación jerárquica</span></div>
+        <div><span class="legend-line dotted"></span><span>Relación de asesoría o apoyo</span></div>
+        <div><span class="legend-yellow"></span><span>Elemento nuevo / en propuesta</span></div>
+      </div>
+      <div class="save-note"><span></span>Los cambios se guardan automáticamente en este navegador.</div>
+    </div>
+  </main>
+
+  <div class="view-switcher" aria-label="Cambiar vista del IPRED">
+    <div class="view-switcher-title">Comparar estructuras</div>
+    <button id="actualViewBtn" class="btn" hidden type="button">← Versión anterior</button>
+    <button id="proposalViewBtn" class="btn primary" type="button">Propuesta</button>
+  </div>
+
+  <dialog id="nodeDialog" class="node-dialog">
+    <form id="nodeForm" method="dialog">
+      <div class="dialog-head">
+        <h2 id="dialogTitle">Agregar casilla</h2>
+        <button class="x-btn" value="cancel" aria-label="Cerrar">×</button>
+      </div>
+
+      <div class="dialog-body">
+        <label id="labelWrap">
+          Texto de la casilla
+          <textarea id="labelInput" rows="3" required></textarea>
+        </label>
+
+        <label id="parentWrap">
+          <span id="parentLabel">Depende de</span>
+          <select id="parentSelect"></select>
+        </label>
+
+        <div id="newNodeHint" class="new-node-hint is-hidden">
+          Las casillas nuevas se crean automáticamente en amarillo para identificarlas como elementos nuevos.
+        </div>
+
+        <div class="two-cols">
+          <label id="relationWrap">
+            Tipo de relación
+            <select id="relationSelect">
+              <option value="hierarchical">Jerárquica</option>
+              <option value="advisory">Asesoría o apoyo</option>
+            </select>
+          </label>
+
+          <label id="styleWrap">
+            Apariencia de la casilla
+            <select id="styleSelect">
+              <option value="normal">Nivel normal</option>
+              <option value="sublevel">Subnivel (fondo blanco)</option>
+              <option value="new">Nuevo (amarillo)</option>
+            </select>
+          </label>
+        </div>
+
+        <div id="anchorWrap" class="two-cols is-hidden">
+          <label>
+            La línea sale del origen por
+            <select id="sourceSideSelect">
+              <option value="auto">Automático</option>
+              <option value="top">Arriba</option>
+              <option value="right">Derecha</option>
+              <option value="bottom">Abajo</option>
+              <option value="left">Izquierda</option>
+            </select>
+          </label>
+
+          <label>
+            La línea entra al destino por
+            <select id="targetSideSelect">
+              <option value="auto">Automático</option>
+              <option value="top">Arriba</option>
+              <option value="right">Derecha</option>
+              <option value="bottom">Abajo</option>
+              <option value="left">Izquierda</option>
+            </select>
+          </label>
+        </div>
+      </div>
+
+      <div class="dialog-foot">
+        <button class="btn subtle" value="cancel">Cancelar</button>
+        <button id="saveDialogBtn" class="btn primary" type="button">Guardar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="script.js"></script>
+</body>
+</html>
